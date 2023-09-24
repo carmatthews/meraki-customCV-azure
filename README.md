@@ -87,7 +87,9 @@ images/
 
 # Step 2: Labeling
 
-Once you have captured the images, use the **Azure Machine Learning Labeling Project** to prepare the dataset for training.   Follow the instructions for the labeling project.
+Once you have captured the images, use the **Azure Machine Learning Labeling Project** to prepare the dataset for training.   
 
-For more information about this service, please see [Image labeling capabilities](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#image-labeling-capabilities.
-)
+For general information about this service please see [Image labeling capabilities](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#image-labeling-capabilities.
+).
+
+Detailed instructions for this tutorial are [here](labeling/README.md).
