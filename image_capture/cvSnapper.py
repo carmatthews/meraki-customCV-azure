@@ -48,21 +48,21 @@ while snap_count < desired_snaps:
     img.show()
     keep = input("Keep image? (Y/N): ")
 
-    if keep == 'Y':
+    if keep.upper() == 'Y':
       snap_count = snap_count + 1
       img.convert('RGB')
       img.save(f"./{dataset_name}/images/snap_{snap_count}.jpg")
       for proc in psutil.process_iter():
         if proc.name() == img_close:
           proc.kill()
-    elif keep == 'N':
+    elif keep.upper() == 'N':
       for proc in psutil.process_iter():
         if proc.name() == img_close:
           proc.kill()
       cont = input("Do you wish to continue taking snapshots? (Y/N): ")
-      if cont =='Y':
+      if cont.upper() =='Y':
         continue
-      elif cont =='N':
+      elif cont.upper() =='N':
         exit()
   else:
     exit()

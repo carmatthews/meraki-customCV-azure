@@ -1,8 +1,8 @@
 # Custom Computer Vision on Azure for Meraki MV Camera
 
-This tutorial guides you through the process of capturing images, labeling a dataset, training a custom object detection model and deploy to Meraki MV camera using Azure Machine Learning and Python.  
+This tutorial guides you through the process of capturing images, labeling a dataset, training a custom object detection model and deploying to a Meraki MV camera using Azure Machine Learning and Python.  
 
-You can also analyze data from the device and the results of custom object detection model by streaming to the cloud using Azure IoT Hub, Azure Data Explorer, and PowerBI visualizations.
+You can also analyze data from the device and the results of custom object detection model by streaming to the cloud using Azure IoT Hub, Microsoft Fabric Eventstream, Azure KQL Database, and PowerBI visualizations.
 
 ![Meraki on Azure Architecture](images/Meraki_Auzre_Arch.png)
 
