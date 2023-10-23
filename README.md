@@ -11,6 +11,7 @@ You can also analyze data from the device and the results of custom object detec
 1. Cisco Meraki MV 2nd Generation Camera (MV2, MV12, MV32, MV22, MV72)
 2. Software version 4.18 on the camera
 3. Microsoft Azure Subscription
+4. An micro computer of a Linux distribution.  This demo used a raspberry PI 4 device running the bullseye respberry pi os 
 
 # Steps to Complete
 
@@ -20,7 +21,9 @@ You can also analyze data from the device and the results of custom object detec
 
 3. Train an object detection model using Azure Machine Learning Notebooks.
 4. Deploy the model to the Meraki MV Camera.
-5. Setup Streaming to Azure
+
+**Step 5.** [Azure](#azure). Setup Streaming to Azure.
+
 6. Analyze.
 
 <a name="image_capture"></a>
@@ -93,3 +96,69 @@ For general information about this service please see [Image labeling capabiliti
 ).
 
 Detailed instructions for this tutorial are [here](labeling/README.md).
+
+<a name="azure"></a>
+
+# Step 5: Setup Streaming to Azure
+
+1. The device Run the following to deploy the Azure resources needed for IOT and streaming
+### ADD CODE HERE ###
+
+2. Since IOT Hub has a specific requirement on the format of messages (devices/[device-id]/messages/events), we need a way to broker and translate messages sent from the Meraki devices into Azure.  To accomplish this, we will leverage Mosquitto.  Install Mosquitto Broker on your device.  If you are running the Debian Linux 11 (bullseye) you can follow these directions.  For other distributions you can search for the set up and verification steps.
+    - [Mosquitto Installation Guide](https://www.howtoforge.com/how-to-install-mosquitto-mqtt-message-broker-on-debian-11/)
+
+3. Once you have completed and verified your installation, you will need to add a certifcate to your device.  For this sample, we will leverage the default public certificate for your IOT Hub and you can place it here /etc/mosquitto/ca_certificates/mosq.pem.  You can use the pem file located in the [mosquitto folder](/mosquitto/).  You would never use a default certificate in a production environment, but for purposes of this repo you can use the generic certificate file.
+    - For further reference: [Azure IOT Security](https://learn.microsoft.com/en-us/azure/iot/iot-overview-security)
+
+4. Next, you need to create a bridge from mosquitto to azure and your IOY Hub.  This can be accomplished by adding bridge configuration to the mosquitto.conf file located here /etc/mosquitto/mosquitto.conf
+```
+# Bridge configuration
+connection azureiot-bridge # this is the name you want to give your bridge
+log_type all
+address [hub fqdn]:8883
+remote_username [iot hub name].azure-devices.net/[device-id]/?api-version=2021-04-12
+remote_password [SharedAccessSignature]
+remote_clientid [device-id]
+bridge_cafile /etc/mosquitto/ca_certificates/mosq.pem # Use this location if this is where you placed the cert file
+try_private false
+cleansession true
+start_type automatic
+bridge_insecure false
+bridge_protocol_version mqttv311
+notifications false
+
+topic devices/[device-id]/messages/events/# out 1
+```
+
+- Replace the following:
+    - **[hub fqdn]** the IOT Hub DNS name you created in step 1.  This includes .azure-devices.net
+    - **[iot hub name]** the IOT Hub name you created in step 1.
+    - **[device-id]** the name of the IOT device you set up in step 1.
+    - **[SharedAccessSignature]**  You will need to generate one and replace when the SAS token has expired.  You can generate this using the Cloud Shell in your Azure portal
+    ```
+    az iot hub generate-sas-token -d [device-id] -n [iot hub name] --du 360000
+    ```
+    - After executing the command, copy the entire quoted string as your **[SharedAccessSignature]**
+- The last line in the bridge configuration subscribes this bridge to all messages that are sent with that topic structure.  Remember to replace **[device-id]** in this line as well.
+- Restart your mosquitto broker.  You should see debug messages that it is connected to your IOT Hub
+- If you want to test the connection, you can send a test message
+    ```
+    mosquitto_pub -t devices/[device-id]/messages/events/ -m "Testing 123"
+    ```
+
+5. Since we cannot change the topic structure on the Meraki devices we must use some code to listen to messages, change the format for some additional information, and then send the message with the re-formatted topic structure.  Use the [helper.py](/mosquitto/helper.py) as the baseline for these changes.  
+- You will need to change the following:
+    - Replace the **[device-id]** in the topic structure with the name of your device
+    ```
+    iothubmqtttopic = "[device-id]"
+    ```
+    - On line 34 starts the part of the code where you will translate the device mapped in the Meraki dashboard to the messages.  This will enable you to decipher which device sent the message.  In this sample code, there are 2 devices.  The temperature sensor which is an MV10 and a camera which is an MV63.  You must at least have a camera.  The value in the topic is the MAC address of the sensor, replace [sensorMacAddressx] with your corresponding MAC address.  Set the sensor name to what you named your sensor in the Meraki Dashboard (or whatever you want)
+    ```
+    if(topicStr.__contains__("[sensorMacAddress1]")):
+        sensorName = "tempHumid1"
+    elif(topicStr.__contains__("[sensorMacAddress2]")):
+        sensorName = "camera1"
+    ```
+    - The next change will be for the messages containing your vision model results.  [cameraSerialNumber] is the serial number of your camera.  Replace [cameraSerialNumber] with your camera serial number.  Set the sensor name to what you named your sensor in the Meraki Dashboard (or whatever you want)
+    ```
+
