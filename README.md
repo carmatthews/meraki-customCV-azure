@@ -109,4 +109,4 @@ Detailed instructions for this tutorial are [here](labeling/README.md).
 
 #### Once you have completed the set up on Azure, you will need to create the bridge from the Meraki device to Azure.  This is a 2 step process.
 
-3. Step by step instructions can be found [here]{azure/README.md}
+3. Step by step instructions can be found [here](azure/README.md)
