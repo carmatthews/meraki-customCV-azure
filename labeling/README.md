@@ -5,6 +5,7 @@
 * An Azure subscription. If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/) before you begin.
 * An Azure Machine Learning workspace. See [Create an Azure Machine Learning workspace](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace?view=azureml-api-2).
 
+
 ## Setup Project
 
 Create an image data labeling project in Azure Machine Learning Studio. 
@@ -41,11 +42,11 @@ Use the default storage associated with your Azure Machine Learning service, cal
 
 ![select-datastore](images/selectdatastore.png)
 
-The upload path should be set for you.  Select the **Upload** button and navigate to where you stored the images captured by the camera.
+The upload path should be set for you.  Select the **Upload** button and navigate to where you stored the images captured by the camera.  You can select the **Upload Folder** to upload all at one time.
 
 ![selectfile](images/selectfile.png)
 
-Upload the images (**NOTE:** this can take a while!)
+Upload the images (**NOTE:** this can take a while!).  When it's complete, you will select **Next**, then **Create**.
 
 ![upload](images/upload.png)
 
@@ -54,9 +55,9 @@ Then select the datastore you just created.
 
 ### Step 4 - Incremental Refresh
 
-For this tutorial leave this option unenabled and select `Next`.
+For this tutorial leave this option disabled and select `Next`.
 
-If you plan to add additional images to the directory regularaly you can enable incremental refresh to automatically add them to the labeling project.  For more information, see [Configure incremental refresh](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#configure-incremental-refresh).
+If you plan to add additional images to the directory regularly you can enable incremental refresh to automatically add them to the labeling project.  For more information, see [Configure incremental refresh](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#configure-incremental-refresh).
 
 
 ### Step 5 – Label categories
@@ -73,11 +74,11 @@ For this tutorial, you can skip this step by selecting `Next`.  If you plan to h
 
 ### Step 7 – Quality control 
 
-For this tutorial, you can skip this step by selecting `Next`.  If you wanted to add mulitple labelers and quality checks you could configure this, more information is available [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#quality-control-preview).
+For this tutorial, you can skip this step by selecting `Next`.  If you wanted to add multiple labelers and quality checks you could configure this, more information is available [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#quality-control-preview).
 
 ### Step 8 - ML assisted labeling
 
-Machine Learning (ML) assisted labeling triggers training of automatic machine learning models once you have submitted enough manually labeled classes/images.  The model is then used to prelabel the remaining images in the dataset to speed up the process.
+Machine Learning (ML) assisted labeling triggers training of automatic machine learning models once you have submitted enough manually labeled classes/images.  The model is then used to pre-label the remaining images in the dataset to speed up the process.
 
 To set this up:
 
@@ -102,7 +103,7 @@ Once you have setup the GPU cluster you created it should populate into the drop
 
 You can also specify the confidence threshold for pre-labeling; the default of 0.8 (80%) confidence should be fine for this tutorial.
 
-Small object detection is not required, leave this unenabled.
+Small object detection is not required, leave this disabled.
 
 ![ML-Assist-4](images/mlassist4.png)
 
@@ -111,7 +112,7 @@ Select `Create project` to complete the setup.  It will take a few minutes to cr
 
 ### Next Steps
 
-Once the labeing project has been intialized, open the project, then select the `Details` menu. 
+Once the labeling project has been initialized, open the project, then select the `Details` menu. 
 
 ![details](images/details.png)
 
@@ -125,11 +126,11 @@ Now you're ready to begin labeling!  Step by step instructions are here: [Run an
 
 Go to the `Dashboard`, this is the main location to track your labeling progress.  You will see a `task queue`, that indicates how many labels are required to automatically trigger a training run of the Auto Machine Learning.  
 
-Example of a task queue for a new project with 162 image files, before any labeling.
+Example of a task queue for a new project with 163 image files, before any labeling; this indicates that 75 images need too be labeled before a training run begins.
 
 ![task-queue](images/taskqueue.png)
 
-Once you have labeled about 25-30 examples of each class, you could also return to the `Details` section and select `On-demand training` if you want to start the AutoML sooner.
+Once you have labeled about 15-30 examples of a class, you could also return to the `Details` section and select `On-demand training` if you want to start the AutoML sooner and it hasn't already begun a training run.
 
 Select the `Label data` option from the top menu.
 
@@ -145,7 +146,7 @@ From the project dashboard, you can track the progress for the jobs that run for
 
 ![dashboard](images/dashboard.png)
 
-When you return to the labeling project after pre-labeling, any object that could be determined by the model based on the accuracy threshold (default of 80%) will have a bounding box around it.  You can submit/accept it, edit the box or class, or remove the box completley if it's inaccurate.
+When you return to the labeling project after pre-labeling, any object that could be determined by the model based on the accuracy threshold (default of 80%) will have a bounding box around it.  You can submit/accept it, edit the box or class, or remove the box completely if it's inaccurate.
 
 In the example below, the Pasta object was labeled correctly, but an inaccurate class was assigned (Mac N Cheese) as well. 
 
@@ -155,17 +156,25 @@ Once you have completed the labeling process for all the images, you will export
 
 ![export1](images/export1.png)
 
-![export2](images/export2.png)
-
 You can export an image label as:
 
-- A CSV file. Azure Machine Learning creates the CSV file in a folder inside Labeling/export/csv.
-- A COCO format file. Azure Machine Learning creates the COCO file in a folder inside Labeling/export/coco.
+- A COCO format file. Azure Machine Learning creates the COCO file in a folder inside Labeling/export/coco. 
 - An Azure MLTable data asset.
 
 For more information, see [Export the labels](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-image-labeling-projects?view=azureml-api-2#export-the-labels).
 
-For this tutorial, export to the COCO file.
+For this example, select the **COCO file** format, and the **Absolute** Coordinate type, and enter a value for the "Export File Name". 
+
+![export2](images/export2.png)
+
+Once you submit, you will have the option to download the file, which is easiest for using further in the demonstration.
+
+Alternatively, once the file has been exported, it is available in the Datastore you configured in previous steps.  In this example, we used the `workspaceblobstore (Default)`.  **Browse** the Datastore from the AML UI, and navigate to `Labeling\export\coco` and then the directory named with a GUID.
+
+Once you have your file exported and available along with the images, you're ready to move on to [Step 3: Training an Object Detection model](../object-detection/README.md).  
+
+
+
 
 
 

@@ -11,7 +11,7 @@ You can also analyze data from the device and the results of custom object detec
 1. Cisco Meraki MV 2nd Generation Camera (MV2, MV12, MV32, MV22, MV72)
 2. Software version 4.18 on the camera
 3. Microsoft Azure Subscription
-4. An micro computer of a Linux distribution.  This demo used a raspberry PI 4 device running the bullseye respberry pi os 
+4. A micro computer with Linux distribution.  This demo used a Raspberry PI 4 device running the Bullseye Raspberry Pi OS 
 
 # Steps to Complete
 
@@ -19,10 +19,11 @@ You can also analyze data from the device and the results of custom object detec
 
 **Step 2.** [Labeling](#labeling). Use the Azure Machine Learning labeling project to prepare the data.
 
-3. Train an object detection model using Azure Machine Learning Notebooks.
-4. Deploy the model to the Meraki MV Camera.
+**Step 3.** [Train Custom Object Detection Model](#custOD). Train an object detection model using Azure Machine Learning Notebooks.
 
-**Step 5.** [Azure](#azure). Setup Streaming to Azure.
+**Step 4.** [Deploy](#deploy). Use the Cisco Meraki Dashboard to deploy the model to the Meraki MV Camera.
+
+**Step 5.** [Stream to Azure](#azure). Setup streaming services to Azure so data from the camera can be analyzed and visualized.
 
 6. Analyze.
 
@@ -33,15 +34,15 @@ You can also analyze data from the device and the results of custom object detec
 The first step is to capture a set of images to use for training a custom object detection model.  
 
 ## Tips for Image Capture
-*   Capture enough images to include a minimum of 50 examples of each class to be detetcted - but the more the better.  
+*   Capture enough images to include a minimum of 50 examples of each class to be detected - but the more the better.  
 
 * Keep the ratio between the most and least frequently captured classes below 2 to 1.
 
-* The more classes you have, the more individaul samples per class you will need.  If you have more than 50 classes, you would want a minimum of 200 examples of each class.
+* The more classes you have, the more individual samples per class you will need.  If you have more than 50 classes, you would want a minimum of 200 examples of each class.
 
 * It's helpful to capture images with different lighting, settings, and combinations that are relevant to the scenario the model would be used in.
 
-* Place the objects in different orientations, positions, locations, and include some objects that you do NOT want to detect as well.  Also, you may want to partially obscure some of the objects as well, by blocking with other objects or not being in completley in the frame.
+* Place the objects in different orientations, positions, locations, and include some objects that you do NOT want to detect as well.  Also, you may want to partially obscure some of the objects as well, by blocking with other objects or not being in completely in the frame.
 
 For more information and suggestion see: [Improve your Custom Vision Model](https://learn.microsoft.com/en-us/azure/ai-services/custom-vision-service/getting-started-improving-your-classifier).
 
@@ -61,7 +62,7 @@ First, set the following values In the [config.py](image_capture/config.py) file
 
 5. `train_test_split` is the percentage of images in the dataset that will be used for training, while the remaining ones will be used for testing.
 
-Once you have completed setting up the `config.py`, the next steps setup the envrionment and snapshot script. 
+Once you have completed setting up the `config.py`, the next steps setup the environment and snapshot script. 
 
 1.  In line `12` of the `cvSnapper.py` script, change the `win_or_mac` variable to `mac` or `win` depending on your environment.
 
@@ -97,16 +98,37 @@ For general information about this service please see [Image labeling capabiliti
 
 Detailed instructions for this tutorial are [here](labeling/README.md).
 
+<a name="custOD"></a>
+
+# Step 3: Train a Custom Object Detection Model
+
+With the labeled images and an annotations file available from the previous step, you are ready to train a custom object detection model using transfer learning. 
+
+We will be leveraging a pre-trained TensorFlow model, specifically the SSD Mobilenet V2 Object Detection model with FPN-Lite feature extractor.  The process we'll follow includes preparing the data, training the model, and evaluating the results.  Once our model is trained and evaluated, we'll convert it to TFLite format. This conversion allows the model to be deployed on the Meraki Camera. 
+
+Detailed instructions for training the model are [here](object_detection/README.md).
+
+<a name="deploy"></a>
+
+# Step 4: Deploy Model to Meraki Camera
+
+After completing the steps to train your custom Object Detection model and exported model file prepared you can deploy the model to a Meraki Camera using the Cisco Meraki Dashboard. 
+
+Detailed instructions can be found in the [MV Sense Custom Computer Vision](https://documentation.meraki.com/MV/Video_Analytics/MV_Sense_Custom_Computer_Vision) documentation.
+
 <a name="azure"></a>
 
 # Step 5: Setup Streaming to Azure
 
-1. Follow the below instructions to create an IOT hub
-- [Create an IOT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#create-an-iot-hub)
+The next step is to scale from the Meraki Camera to Azure for additional Analytics and Visualization on data collected on the camera, including the output of the custom Object Detection model running on the camera.  This is enabled by streaming data from the Meraki Camera to Azure.
 
-2. Follow the below instructions to create the device that represents your mosquitto broker
-- [Create a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub)
+## Setup Azure Services
 
-#### Once you have completed the set up on Azure, you will need to create the bridge from the Meraki device to Azure.  This is a 2 step process.
+1. Follow the instructions to [Create an IOT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#create-an-iot-hub) service on Azure.
 
-3. Step by step instructions can be found [here](azure/README.md)
+2. Follow the instructions to [Register a new device in the IoT hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub) representing your mosquitto broker.
+
+## Create Bridge from Device to Azure
+
+Once you have set up those services on Azure, you will create the bridge from the Meraki device to Azure.  Step by step instructions can be found [here](azure/README.md).
+
