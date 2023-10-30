@@ -101,9 +101,12 @@ Detailed instructions for this tutorial are [here](labeling/README.md).
 
 # Step 5: Setup Streaming to Azure
 
-1. The device Run the following to deploy the Azure resources needed for IOT and streaming
-### ADD CODE HERE ###
+1. Follow the below instructions to create an IOT hub
+- [Create an IOT Hub](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#create-an-iot-hub)
 
-### Once you have completed the set up on Azure, you will need to create the bridge from the Meraki device to Azure.  This is a 2 step process.
+2. Follow the below instructions to create the device that represents your mosquitto broker
+- [Create a device](https://learn.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal#register-a-new-device-in-the-iot-hub)
 
-Step by step instructions can be found [here]{azure/README.md}
+#### Once you have completed the set up on Azure, you will need to create the bridge from the Meraki device to Azure.  This is a 2 step process.
+
+3. Step by step instructions can be found [here](azure/README.md)
