@@ -106,7 +106,7 @@ With the labeled images and an annotations file available from the previous step
 
 We will be leveraging a pre-trained TensorFlow model, specifically the SSD Mobilenet V2 Object Detection model with FPN-Lite feature extractor.  The process we'll follow includes preparing the data, training the model, and evaluating the results.  Once our model is trained and evaluated, we'll convert it to TFLite format. This conversion allows the model to be deployed on the Meraki Camera. 
 
-Detailed instructions for training the model are [here](object_detection/README.md).
+Detailed instructions for training the model are [here](object-detection/README.md).
 
 <a name="deploy"></a>
 
