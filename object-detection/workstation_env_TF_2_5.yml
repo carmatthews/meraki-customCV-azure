@@ -1,0 +1,16 @@
+name: TF_2_5
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip=21.2.4
+  - pip:
+    - protobuf~=3.20
+    - numpy==1.19.2
+    - tensorflow==2.5
+    - ipykernel~=6.0
+    - matplotlib
+    - mlflow== 1.26.1
+    - azureml-mlflow==1.42.0
+    - pycocotools
+    - opencv-python-headless
