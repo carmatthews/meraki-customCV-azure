@@ -171,7 +171,7 @@ Once you submit, you will have the option to download the file, which is easiest
 
 Alternatively, once the file has been exported, it is available in the Datastore you configured in previous steps.  In this example, we used the `workspaceblobstore (Default)`.  **Browse** the Datastore from the AML UI, and navigate to `Labeling\export\coco` and then the directory named with a GUID.
 
-Once you have your file exported and available along with the images, you're ready to move on to [Step 3: Training an Object Detection model](../object-detection/README.md).  
+Once you have your file exported and available along with the images, you're ready to move on to [Step 3: Training an Object Detection model](../object-detection/Object_Detection_Model.ipynb).  
 
 
 
