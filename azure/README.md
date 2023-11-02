@@ -9,7 +9,7 @@
 1. Since IOT Hub has a specific requirement on the format of messages (devices/[device-id]/messages/events), we need a way to broker and translate messages sent from the Meraki devices into Azure.  To accomplish this, we will leverage Mosquitto.  Install Mosquitto Broker on your device.  If you are running the Debian Linux 11 (bullseye) you can follow these directions.  For other distributions you can search for the set up and verification steps.
     - [Mosquitto Installation Guide](https://www.howtoforge.com/how-to-install-mosquitto-mqtt-message-broker-on-debian-11/)
 
-2. Once you have completed and verified your installation, you will need to add a certifcate to your device.  For this sample, we will leverage the default public certificate for your IOT Hub and you can place it here /etc/mosquitto/ca_certificates/mosq.pem.  You can use the pem file located in the [mosquitto folder](,,/mosquitto/).  You would never use a default certificate in a production environment, but for purposes of this repo you can use the generic certificate file.
+2. Once you have completed and verified your installation, you will need to add a certificate to your device.  For this sample, we will leverage the default public certificate for your IOT Hub and you can place it here /etc/mosquitto/ca_certificates/mosq.pem.  You can use the pem file located in the [mosquitto folder](mosquitto/mosq.pem).  You would never use a default certificate in a production environment, but for purposes of this repo you can use the generic certificate file.
     - For further reference: [Azure IOT Security](https://learn.microsoft.com/en-us/azure/iot/iot-overview-security)
 
 3. Next, you need to create a bridge from mosquitto to azure and your IOY Hub.  This can be accomplished by adding bridge configuration to the mosquitto.conf file located here /etc/mosquitto/mosquitto.conf
@@ -48,7 +48,7 @@ topic devices/[device-id]/messages/events/# out 1
     mosquitto_pub -t devices/[device-id]/messages/events/ -m "Testing 123"
     ```
 
-4. Since we cannot change the topic structure on the Meraki devices we must use some code to listen to messages, change the format for some additional information, and then send the message with the re-formatted topic structure.  Use the [helper.py](../mosquitto/helper.py) as the baseline for these changes.  Please this file somewhere convenients within /etc/mosquitto.
+4. Since we cannot change the topic structure on the Meraki devices we must use some code to listen to messages, change the format for some additional information, and then send the message with the re-formatted topic structure.  Use the [helper.py](mosquitto/helper.py) as the baseline for these changes.  Please this file somewhere convenients within /etc/mosquitto.
 - You will need to change the following:
     - Replace the **[device-id]** in the topic structure with the name of your device
     ```
