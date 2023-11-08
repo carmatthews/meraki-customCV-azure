@@ -57,9 +57,9 @@ topic devices/[device-id]/messages/events/# out 1
 - You will need to change the following:
     - Replace the **[device-id]** in the topic structure with the name of your device
     ```
-    iothubmqtttopic = "[device-id]"
+    iothubmqtttopic = "devices/[device-id]/messages/events/"
     ```
-    - On line 35 starts the part of the code where you will translate the device mapped in the __Meraki dashboard__ to the messages.  This will enable you to decipher which device sent the message.  The MAC Address has colons in it.  In this sample code, there are 2 devices.  The temperature sensor which is an MV10 and a camera which is an MV63.  You must at least have a camera.  The value in the topic is the MAC address of the sensor, replace [sensorMacAddressx] with your corresponding MAC address.  Set the sensor name to what you named your sensor in the Meraki Dashboard (or whatever you want)
+    - On line 35 starts the part of the code where you will translate the device mapped in the __Meraki dashboard__ to the messages.  This will enable you to decipher which device sent the message.  The MAC Address has colons in it.  In this sample code, there are 2 devices.  The temperature sensor which is an MV10 and a camera which is an MV63.  You must at least have a camera.  The value in the topic is the MAC address of the sensor, replace [sensorMacAddressx] with your corresponding MAC address using __capital letters__.  Set the sensor name to what you named your sensor in the Meraki Dashboard (or whatever you want)
     ```
     if(topicStr.__contains__("[sensorMacAddress1]")):
         sensorName = "tempHumid1"
