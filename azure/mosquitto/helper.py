@@ -3,7 +3,7 @@ import time
 import json
 
 #replace [device-id] with your device you created in IoT Hub.
-iothubmqtttopic = "[device-id]"
+iothubmqtttopic = "devices/[device-id]/messages/events/"
 
 # remove print statements if you don't care to see message transformations
 
