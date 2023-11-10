@@ -3,7 +3,7 @@ import time
 import json
 
 #replace [device-id] with your device you created in IoT Hub.
-iothubmqtttopic = "[device-id]"
+iothubmqtttopic = "devices/[device-id]/messages/events/"
 
 # remove print statements if you don't care to see message transformations
 
@@ -29,14 +29,16 @@ def on_message(client, userdata, message):
          # Determine the sensor name based on the topic
          # This is a bit of a hack, but it works for demo purposes
          # The value in the topic is the MAC address of the sensor, replace [sensorMacAddress1..x] with your corresponding MAC address
+         # The MAC Address has colons in it
          # Set the sensor name to what you named your sensor in the Meraki Dashboard (or whatever you want)
-         # In this example, I have a temperature/humidity sensor and a camera.  You must at least have a camera
+         # In this example, I have a temperature/humidity sensor and a camera.  You must at least have 1 camera
          if(topicStr.__contains__("[sensorMacAddress1]")):
                sensorName = "tempHumid1"
          elif(topicStr.__contains__("[sensorMacAddress2]")):
                sensorName = "camera1"
          # >>> NOTE <<<
          # >>> This should be the serial number for the camera containing the deployed model 
+         # >>> The serial number has dashes in it
          # >>> Change Below <<<
          elif(topicStr.__contains__("[cameraSerialNumber]")):
                sensorName = "cameraCV"
