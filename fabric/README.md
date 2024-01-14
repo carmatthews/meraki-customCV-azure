@@ -16,7 +16,7 @@
 
 5. [Configure EventStream Destination](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/add-manage-eventstream-destinations) to the KQL Database created in step 2.
 
-6. [Create KQL Queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set) using the query provided in this repo[KQL Queryset Sample.txt](KQL_Queryset_Sample.txt).
+6. [Create KQL Queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set) using the query provided in this repo: [KQL Queryset Sample.txt](KQL_Queryset_Sample.txt).
 
 7. Create a Power BI report from the KQL Queryset following the steps in [Visalize data in a PowerBI Report](https://learn.microsoft.com/en-us/fabric/real-time-analytics/create-powerbi-report).
 
