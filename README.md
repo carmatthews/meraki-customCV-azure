@@ -137,4 +137,4 @@ Once you have set up those services on Azure, you will create the bridge from th
 
 # Step 6: Analyze, Visualize & Automate using Azure Data Fabric 
 
-Now that we can stream the data to Azure, we can use Azure Data Fabric to do Real-Time Analytics, Visualize our data using Copilot assistance, and orchestrate automation based on events detected in the data.   Step by step instructions to set this up are available [here](fabric/README.MD).
+Now that we can stream the data to Azure, we can use Azure Data Fabric to do Real-Time Analytics, Visualize our data using Copilot assistance, and orchestrate automation based on events detected in the data.   Step by step instructions to set this up are available [here](fabric/README.md).
