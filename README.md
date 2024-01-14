@@ -25,7 +25,8 @@ You can also analyze data from the device and the results of custom object detec
 
 **Step 5.** [Stream to Azure](#azure). Setup streaming services to Azure so data from the camera can be analyzed and visualized.
 
-6. Analyze.
+**Step 6.** [Analyze](#fabric). Leverage the data on the cloud for analytics, visualization and automation such as event alerts.
+
 
 <a name="image_capture"></a>
 
@@ -132,3 +133,8 @@ The next step is to scale from the Meraki Camera to Azure for additional Analyti
 
 Once you have set up those services on Azure, you will create the bridge from the Meraki device to Azure.  Step by step instructions can be found [here](azure/README.md).
 
+<a name="fabric"></a>
+
+# Step 6: Analyze, Visualize & Automate using Azure Data Fabric 
+
+Now that we can stream the data to Azure, we can use Azure Data Fabric to do Real-Time Analytics, Visualize our data using Copilot assistance, and orchestrate automation based on events detected in the data.   Step by step instructions to set this up are available [here](fabric/README.me).

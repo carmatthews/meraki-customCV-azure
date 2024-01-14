@@ -1,0 +1,22 @@
+ciscotelemetry
+| extend parsed = parse_json(outputs)
+| mv-expand parsed
+| where sensorName == 'cameraCV' and outputs != '[]'
+| extend item = case(parsed.class == 0, "Corn", 
+                       parsed.class == 1, "Chili",
+                       parsed.class == 2, "Pasta",
+                       parsed.class == 3, "Mac_n_cheese", 
+                       "Unclassifed")
+| project timestamp = unixtime_milliseconds_todatetime(timestamp), sensorReading, item, sensorName, class = parsed.class, id = parsed.id, location = parsed.location, score = parsed.score
+| summarize score = max(todecimal(score)), location = max((tostring(location))), timestampUTC = max(timestamp) by format_datetime(timestamp, 'yyyy-M-dd H:mm'), sensorReading, sensorName, item, tostring(id)
+| project timestampUTC, dayofweeknum = toint(format_timespan(dayofweek(timestampUTC), 'd')), sensorReading,sensorName,item,id,score, location, day = format_datetime(timestampUTC, 'dd'), hour = format_datetime(timestampUTC, 'H'), minute = format_datetime(timestampUTC, 'mm'), dayofweek = case(
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 0, "Sun",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 1, "Mon",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 2, "Tue",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 3, "Wed",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 4, "Thu",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 5, "Fri",
+    toint(format_timespan(dayofweek(timestampUTC), 'd')) == 6, "Sat",
+    "Unknown"
+)
+| order by timestampUTC desc 
