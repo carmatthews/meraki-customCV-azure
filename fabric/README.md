@@ -10,9 +10,9 @@
 
 2. [Create a KQL database](https://learn.microsoft.com/en-us/fabric/real-time-analytics/create-database).
 
-3. [Setup EventStream](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/create-manage-an-eventstream)
+3. [Setup EventStream](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/create-manage-an-eventstream).
 
-4. [Configure EventStream Source](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/create-manage-an-eventstream) source for the Azure IoT Hub (or Event Hub) created in previous section (Stream to Azure).
+4. [Configure EventStream Source](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/add-manage-eventstream-sources) for the Azure IoT Hub (or Event Hub) created in previous section (Stream to Azure).
 
 5. [Configure EventStream Destination](https://learn.microsoft.com/en-us/fabric/real-time-analytics/event-streams/add-manage-eventstream-destinations) to the KQL Database created in step 2.
 

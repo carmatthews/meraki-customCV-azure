@@ -3,7 +3,7 @@
 ## Prerequisites
 * The data that you want to label, either in local files or in Azure Blob Storage.
 * An Azure subscription. If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/) before you begin.
-* An Azure Machine Learning workspace. See [Create an Azure Machine Learning workspace](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace?view=azureml-api-2).
+* An Azure Machine Learning workspace. See [Create an Azure Machine Learning workspace](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-workspace?view=azureml-api-2). 
 
 
 ## Setup Project
