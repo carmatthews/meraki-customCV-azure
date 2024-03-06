@@ -6,7 +6,6 @@
 3. Basic working knowledge of the Linux distribution you are using
 
 ## Steps to Complete
-
 1. Since IOT Hub has a specific requirement on the format of messages (devices/[device-id]/messages/events), we need a way to broker and translate messages sent from the Meraki devices into Azure.  To accomplish this, we will leverage Mosquitto.  Install Mosquitto Broker on your device.  If you are running the Debian Linux 11 (bullseye) or Debian Linux 12 (bookworm) you can follow these directions.  For other distributions you can search for the set up and verification steps.
     - [Mosquitto Installation Guide](https://www.howtoforge.com/how-to-install-mosquitto-mqtt-message-broker-on-debian-11/)
     - __STOP after you have validated Mosquitto is working properly.  DO NOT proceed to Authentication.__
@@ -14,7 +13,10 @@
 2. Once you have completed and verified your installation, you will need to add a certificate to your device.  For this sample, we will leverage the default public certificate for your IOT Hub and you can place it here /etc/mosquitto/ca_certificates/mosq.pem.  You can use the pem file located in the [mosquitto folder](mosquitto/mosq.pem).  You would never use a default certificate in a production environment, but for purposes of this repo you can use the generic certificate file.
     - For further reference: [Azure IOT Security](https://learn.microsoft.com/en-us/azure/iot/iot-overview-security)
 
-3. Next, you need to create a bridge from mosquitto to azure and your IOT Hub.  This can be accomplished by adding bridge configuration to the mosquitto.conf file located here /etc/mosquitto/mosquitto.conf
+3. Connect the Meraki Dashboard to the device you are using as your MQTT broker.  Follow the instructions.
+    - [MQTT Set up Guide](https://documentation.meraki.com/MT/MT_General_Articles/MT_MQTT_Setup_Guide#:~:text=Getting%20Started%201%20Configuring%20the%20Dashboard%20The%20MQTT,...%203%20General%20MQTT%20features%20Retained%20Message%20)
+
+4. Next, you need to create a bridge from mosquitto to azure and your IOT Hub.  This can be accomplished by adding bridge configuration to the mosquitto.conf file located here /etc/mosquitto/mosquitto.conf
 ```
 listener 1883
 allow_anonymous true
@@ -53,7 +55,7 @@ topic devices/[device-id]/messages/events/# out 1
     mosquitto_pub -t devices/[device-id]/messages/events/ -m "Testing 123"
     ```
 
-4. Since we cannot change the topic structure on the Meraki devices we must use some code to listen to messages, change the format for some additional information, and then send the message with the re-formatted topic structure.  Use the [helper.py](mosquitto/helper.py) as the baseline for these changes.  Place this file somewhere convenients within /etc/mosquitto.
+5. Since we cannot change the topic structure on the Meraki devices we must use some code to listen to messages, change the format for some additional information, and then send the message with the re-formatted topic structure.  Use the [helper.py](mosquitto/helper.py) as the baseline for these changes.  Place this file somewhere convenients within /etc/mosquitto.
 - You will need to change the following:
     - Replace the **[device-id]** in the topic structure with the name of your device
     ```
@@ -76,14 +78,14 @@ topic devices/[device-id]/messages/events/# out 1
         broker_address="localhost"
     ```
 
-5. Get the IP address of your device that is acting as your broker.  You will need this for the next step.  You can use the following command to get the IP address
+6. Get the IP address of your device that is acting as your broker.  You will need this for the next step.  You can use the following command to get the IP address
     ```
     hostname -I
     ```
 
-6. Now we need to connect the Meraki devices to our broker devices.  You can find the instructions for how to do this in the Meraki documentation. [MQTT Data Streaming](https://documentation.meraki.com/MR/Other_Topics/MR_MQTT_Data_Streaming)
+7. Now we need to connect the Meraki devices to our broker devices.  You can find the instructions for how to do this in the Meraki documentation. [MQTT Data Streaming](https://documentation.meraki.com/MR/Other_Topics/MR_MQTT_Data_Streaming)
 
-7. The very last step is to put everything together.  Go to the location where you have put the hilper.py file.  Begin execution of the file
+8. The very last step is to put everything together.  Go to the location where you have put the hilper.py file.  Begin execution of the file
 ```
     python helper.py
 ```
